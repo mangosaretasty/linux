@@ -95,14 +95,6 @@
 		regulator-always-on;
 		regulator-boot-on;
 	};
-
-	/* Dummy regulator until PMI632 has LCDB VSP/VSN support */
-	lcdb_dummy: regulator-lcdb-dummy {
-		compatible = "regulator-fixed";
-		regulator-name = "lcdb_dummy";
-		regulator-min-microvolt = <5800000>;
-		regulator-max-microvolt = <5800000>;
-	};
 };
 
 /delete-node/ &gpu_zap_shader;
@@ -131,8 +123,9 @@
 		vddio-supply = <&pm8953_l6>;
 		vci-supply = <&pm8953_l17>;
 
-		vsn-supply = <&lcdb_dummy>;
-		vsp-supply = <&lcdb_dummy>;
+        vsp-supply = <&lab>;
+        vsn-supply = <&ibb>;
+
 
 		port {
 			panel_in: endpoint {

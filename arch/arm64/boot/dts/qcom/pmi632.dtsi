@@ -205,5 +205,21 @@
 			reg = <0x5700>;
 			status = "disabled";
 		};
+		
+		pmi632_lcdb: lcd-bias@ec00 {
+			compatible = "qcom,pmi632-lcdb";
+			reg = <0xec00>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			lab: lab@de00 {
+				reg = <0xde00>;
+			};
+
+			ibb: ibb@dc00 {
+				reg = <0xdc00>;
+			};
+		};
+
 	};
 };
