@@ -34,9 +34,9 @@ static inline struct tianma_622_v0 *to_tianma_622_v0(struct drm_panel *panel)
 static void tianma_622_v0_reset(struct tianma_622_v0 *ctx)
 {
 	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-	usleep_range(10000, 11000);
+	msleep(20);
 	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-	usleep_range(10000, 11000);
+	msleep(50);
 }
 
 static int tianma_622_v0_on(struct tianma_622_v0 *ctx)
@@ -187,7 +187,7 @@ static int tianma_622_v0_probe(struct mipi_dsi_device *dsi)
 	dsi->lanes = 4;
 	dsi->format = MIPI_DSI_FMT_RGB888;
 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
-			  MIPI_DSI_CLOCK_NON_CONTINUOUS;
+			  MIPI_DSI_CLOCK_NON_CONTINUOUS | MIPI_DSI_MODE_LPM;
 
 	ctx->panel.prepare_prev_first = true;
 
