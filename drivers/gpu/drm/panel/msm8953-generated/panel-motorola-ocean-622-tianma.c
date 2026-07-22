@@ -49,7 +49,7 @@ static int tianma_622_v0_on(struct tianma_622_v0 *ctx)
 				     0x24);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, MIPI_DCS_WRITE_POWER_SAVE, 0x01);
 	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
-	mipi_dsi_msleep(&dsi_ctx, 60);
+	mipi_dsi_msleep(&dsi_ctx, 120);
 	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xff, 0x98, 0x81, 0x03);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x83, 0x20);
@@ -187,7 +187,7 @@ static int tianma_622_v0_probe(struct mipi_dsi_device *dsi)
 	dsi->lanes = 4;
 	dsi->format = MIPI_DSI_FMT_RGB888;
 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
-			  MIPI_DSI_CLOCK_NON_CONTINUOUS | MIPI_DSI_MODE_LPM;
+			  MIPI_DSI_MODE_LPM;
 
 	ctx->panel.prepare_prev_first = true;
 
