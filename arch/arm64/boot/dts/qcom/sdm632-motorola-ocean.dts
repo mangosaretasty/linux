@@ -455,3 +455,15 @@
 	vddpa-supply = <&pm8953_l9>;
 	vdddig-supply = <&pm8953_l5>;
 };
+
+&lab {
+	regulator-min-microvolt = <5800000>;
+	regulator-max-microvolt = <5800000>;
+	status = "okay";
+};
+
+&ibb {
+	regulator-min-microvolt = <5800000>;
+	regulator-max-microvolt = <5800000>;
+	status = "okay";
+};
