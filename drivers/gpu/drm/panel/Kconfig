@@ -284,6 +284,15 @@ config DRM_PANEL_ILITEK_ILI9882T
 	  Say Y if you want to enable support for panels based on the
 	  Ilitek ILI9882t controller.
 
+config DRM_PANEL_MOTOROLA_OCEAN
+	tristate "Motorola Ocean Tianma 6.22 panel"
+	depends on OF
+	depends on DRM_MIPI_DSI
+	depends on BACKLIGHT_CLASS_DEVICE
+	help
+	  Say Y here if you want to enable support for the Tianma 6.22"
+	  720p video mode panel found in the Motorola Moto G7 Power (ocean).
+
 config DRM_PANEL_INNOLUX_EJ030NA
         tristate "Innolux EJ030NA 320x480 LCD panel"
         depends on OF && SPI
