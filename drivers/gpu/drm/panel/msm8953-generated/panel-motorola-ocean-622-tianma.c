@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-only
-// Copyright (c) 2026 FIXME
-// Generated with linux-mdss-dsi-panel-driver-generator from vendor device tree:
-//   Copyright (c) 2013, The Linux Foundation. All rights reserved. (FIXME)
+// Copyright (c) 2026 Motorola Mobility LLC
 
 #include <linux/delay.h>
 #include <linux/gpio/consumer.h>
@@ -59,6 +57,8 @@ static int tianma_622_v0_on(struct tianma_622_v0 *ctx)
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xbc, 0x08);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xff, 0x98, 0x81, 0x06);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0x06, 0xc4);
+	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xff, 0x98, 0x81, 0x00);
+	mipi_dsi_dcs_set_display_brightness_multi(&dsi_ctx, 0xcc0c);
 	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xff, 0x98, 0x81, 0x00);
 
 	return dsi_ctx.accum_err;
@@ -127,15 +127,28 @@ static const struct drm_display_mode tianma_622_v0_mode = {
 	.vsync_start = 1520 + 41,
 	.vsync_end = 1520 + 41 + 4,
 	.vtotal = 1520 + 41 + 4 + 20,
-	.width_mm = 0,
-	.height_mm = 0,
+	.width_mm = 65,
+	.height_mm = 137,
 	.type = DRM_MODE_TYPE_DRIVER,
 };
 
 static int tianma_622_v0_get_modes(struct drm_panel *panel,
 				   struct drm_connector *connector)
 {
-	return drm_connector_helper_get_modes_fixed(connector, &tianma_622_v0_mode);
+	struct drm_display_mode *mode;
+
+	mode = drm_mode_duplicate(connector->dev, &tianma_622_v0_mode);
+	if (!mode)
+		return -ENOMEM;
+
+	drm_mode_set_name(mode);
+	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
+	drm_mode_probed_add(connector, mode);
+
+	connector->display_info.width_mm = 65;
+	connector->display_info.height_mm = 137;
+
+	return 1;
 }
 
 static const struct drm_panel_funcs tianma_622_v0_panel_funcs = {
@@ -174,7 +187,7 @@ static int tianma_622_v0_probe(struct mipi_dsi_device *dsi)
 	dsi->lanes = 4;
 	dsi->format = MIPI_DSI_FMT_RGB888;
 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
-			  MIPI_DSI_CLOCK_NON_CONTINUOUS | MIPI_DSI_MODE_LPM;
+			  MIPI_DSI_CLOCK_NON_CONTINUOUS;
 
 	ctx->panel.prepare_prev_first = true;
 
@@ -206,7 +219,7 @@ static void tianma_622_v0_remove(struct mipi_dsi_device *dsi)
 }
 
 static const struct of_device_id tianma_622_v0_of_match[] = {
-	{ .compatible = "motorola,ocean-622-tianma" }, // FIXME
+	{ .compatible = "motorola,ocean-622-tianma" },
 	{ /* sentinel */ }
 };
 MODULE_DEVICE_TABLE(of, tianma_622_v0_of_match);
@@ -221,6 +234,6 @@ static struct mipi_dsi_driver tianma_622_v0_driver = {
 };
 module_mipi_dsi_driver(tianma_622_v0_driver);
 
-MODULE_AUTHOR("linux-mdss-dsi-panel-driver-generator <fix@me>"); // FIXME
-MODULE_DESCRIPTION("DRM driver for mipi_mot_vid_tianma_720p_622");
+MODULE_AUTHOR("postmarketOS Developers");
+MODULE_DESCRIPTION("DRM driver for Motorola G7 Power (ocean) Tianma 6.22\" panel");
 MODULE_LICENSE("GPL");
