@@ -22,6 +22,8 @@ struct tianma_622_v0 {
 };
 
 static const struct regulator_bulk_data tianma_622_v0_supplies[] = {
+	{ .supply = "vddio" }, /* 1.8V logic rail for TCON and Touch */
+	{ .supply = "vci" },   /* 2.8V/3.0V analog logic rail */
 	{ .supply = "vsn" },
 	{ .supply = "vsp" },
 };

@@ -128,6 +128,9 @@
 
 		reset-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
 
+		vddio-supply = <&pm8953_l6>;
+		vci-supply = <&pm8953_l17>;
+
 		vsn-supply = <&lcdb_dummy>;
 		vsp-supply = <&lcdb_dummy>;
 
