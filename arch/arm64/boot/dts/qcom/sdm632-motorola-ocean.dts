@@ -95,6 +95,14 @@
 		regulator-always-on;
 		regulator-boot-on;
 	};
+
+	/* Dummy regulator until PMI632 has LCDB VSP/VSN support */
+	lcdb_dummy: regulator-lcdb-dummy {
+		compatible = "regulator-fixed";
+		regulator-name = "lcdb_dummy";
+		regulator-min-microvolt = <5800000>;
+		regulator-max-microvolt = <5800000>;
+	};
 };
 
 &gpu_zap_shader {
@@ -112,7 +120,7 @@
 	status = "okay";
 
 	panel: panel@0 {
-		compatible = "motorola,ocean-panel";
+		compatible = "motorola,ocean-622-tianma";
 		reg = <0>;
 
 		backlight = <&backlight>;
@@ -122,7 +130,8 @@
 
 		reset-gpios = <&tlmm 61 GPIO_ACTIVE_LOW>;
 
-		//TODO: missing regs
+		vsn-supply = <&lcdb_dummy>;
+		vsp-supply = <&lcdb_dummy>;
 
 		port {
 			panel_in: endpoint {
