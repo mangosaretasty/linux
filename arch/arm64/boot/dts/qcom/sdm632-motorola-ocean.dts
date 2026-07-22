@@ -11,6 +11,15 @@
 #include "pmi632.dtsi"
 #include <dt-bindings/leds/common.h>
 
+lcdb_dummy: regulator-lcdb-dummy {
+	compatible = "regulator-fixed";
+	regulator-name = "lcdb_dummy";
+	regulator-min-microvolt = <5800000>;
+	regulator-max-microvolt = <5800000>;
+	regulator-always-on;
+	regulator-boot-on;
+};
+
 
 /delete-node/ &cont_splash_mem;
 /delete-node/ &qseecom_mem;
@@ -127,8 +136,8 @@
 		vddio-supply = <&pm8953_l6>;
 		vci-supply = <&pm8953_l17>;
 
-        vsp-supply = <&lab>;
-        vsn-supply = <&ibb>;
+		vsp-supply = <&lcdb_dummy>;
+		vsn-supply = <&lcdb_dummy>;
 
 
 		port {
