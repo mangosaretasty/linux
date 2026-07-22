@@ -105,9 +105,7 @@
 	};
 };
 
-&gpu_zap_shader {
-	firmware-name = "qcom/msm8953/motorola/ocean/a506_zap.mdt";
-};
+/delete-node/ &gpu_zap_shader;
 
 &mdss {
 	status = "okay";
