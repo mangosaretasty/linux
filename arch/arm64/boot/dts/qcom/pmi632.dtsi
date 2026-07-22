@@ -206,20 +206,20 @@
 			status = "disabled";
 		};
 		
-		pmi632_lcdb: lcd-bias@ec00 {
-			compatible = "qcom,pmi632-lcdb";
-			reg = <0xec00>;
-			#address-cells = <1>;
-			#size-cells = <0>;
+		pmi632_lcdb: labibb {
+			compatible = "qcom,pmi8998-lab-ibb";
 
-			lab: lab@de00 {
-				reg = <0xde00>;
+			lab: lab {
+				interrupts = <0x3 0xde 0x1 IRQ_TYPE_EDGE_RISING>,
+					     <0x3 0xde 0x0 IRQ_TYPE_LEVEL_LOW>;
+				interrupt-names = "sc-err", "ocp";
 			};
 
-			ibb: ibb@dc00 {
-				reg = <0xdc00>;
+			ibb: ibb {
+				interrupts = <0x3 0xdc 0x2 IRQ_TYPE_EDGE_RISING>,
+					     <0x3 0xdc 0x0 IRQ_TYPE_LEVEL_LOW>;
+				interrupt-names = "sc-err", "ocp";
 			};
 		};
-
 	};
 };
