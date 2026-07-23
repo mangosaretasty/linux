@@ -136,10 +136,12 @@ int msm_fbdev_driver_fbdev_probe(struct drm_fb_helper *helper,
 	drm_fb_helper_fill_info(fbi, helper, sizes);
 
 	fbi->screen_buffer = msm_gem_get_vaddr(bo);
+	fbi->screen_base = (char __iomem *)fbi->screen_buffer; // <--- ADD THIS LINE!
 	if (IS_ERR(fbi->screen_buffer)) {
 		ret = PTR_ERR(fbi->screen_buffer);
 		goto fail;
 	}
+
 	fbi->screen_size = bo->size;
 	fbi->fix.smem_start = paddr;
 	fbi->fix.smem_len = bo->size;
