@@ -2135,8 +2135,9 @@ int msm_dsi_host_xfer_prepare(struct mipi_dsi_host *host,
 	 * mdp clock need to be enabled to receive dsi interrupt
 	 */
 	pm_runtime_get_sync(&msm_host->pdev->dev);
-	cfg_hnd->ops->link_clk_enable(msm_host);
 	cfg_hnd->ops->link_clk_set_rate(msm_host);
+	cfg_hnd->ops->link_clk_enable(msm_host);
+
 
 	/* TODO: vote for bus bandwidth */
 
@@ -2471,9 +2472,9 @@ int msm_dsi_host_power_on(struct mipi_dsi_host *host,
 	}
 
 	pm_runtime_get_sync(&msm_host->pdev->dev);
-	ret = cfg_hnd->ops->link_clk_enable(msm_host);
+	ret = cfg_hnd->ops->link_clk_set_rate(msm_host);
 	if (!ret)
-		ret = cfg_hnd->ops->link_clk_set_rate(msm_host);
+		ret = cfg_hnd->ops->link_clk_enable(msm_host);
 	if (ret) {
 		pr_err("%s: failed to enable link clocks. ret=%d\n",
 		       __func__, ret);
