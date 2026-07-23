@@ -6,19 +6,8 @@
 
 #include "sdm632.dtsi"
 #include "pm8953.dtsi"
-#include "sdm632.dtsi"
-#include "pm8953.dtsi"
 #include "pmi632.dtsi"
 #include <dt-bindings/leds/common.h>
-
-lcdb_dummy: regulator-lcdb-dummy {
-	compatible = "regulator-fixed";
-	regulator-name = "lcdb_dummy";
-	regulator-min-microvolt = <5800000>;
-	regulator-max-microvolt = <5800000>;
-	regulator-always-on;
-	regulator-boot-on;
-};
 
 
 /delete-node/ &cont_splash_mem;
@@ -108,6 +97,16 @@ lcdb_dummy: regulator-lcdb-dummy {
 		regulator-always-on;
 		regulator-boot-on;
 	};
+
+    lcdb_dummy: regulator-lcdb-dummy {
+	   compatible = "regulator-fixed";
+	   regulator-name = "lcdb_dummy";
+	   regulator-min-microvolt = <5800000>;
+	   regulator-max-microvolt = <5800000>;
+	   regulator-always-on;
+	   regulator-boot-on;
+    };
+
 };
 
 /delete-node/ &gpu_zap_shader;
