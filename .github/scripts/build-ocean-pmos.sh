@@ -55,6 +55,17 @@ if [[ ! -f "${pmbootstrap}" ]]; then
 	exit 1
 fi
 
+work_version="$(awk '$1 == "work_version" && $2 == "=" { print $3; exit }' \
+	"${pmbootstrap_dir}/pmb/config/__init__.py")"
+if [[ ! "${work_version}" =~ ^[0-9]+$ ]]; then
+	echo "Could not determine the pmbootstrap work-folder version" >&2
+	exit 1
+fi
+
+mkdir -p "${pmb_work}/cache_git"
+chmod 700 "${pmb_work}" "${pmb_work}/cache_git"
+printf '%s\n' "${work_version}" >"${pmb_work}/version"
+
 if ! find "${pmaports_dir}" -type f -path "*/${kernel_package}/APKBUILD" -print -quit | grep -q .; then
 	echo "${kernel_package} is not present in the selected pmaports revision" >&2
 	exit 1
