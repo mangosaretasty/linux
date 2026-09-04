@@ -23,7 +23,7 @@ case "${build_mode}" in
 		;;
 esac
 
-mkdir -p "${ci_root}" "${output_dir}"
+mkdir -p "${ci_root}" "${output_dir}" "${pmb_work}"
 
 clone_ref() {
 	local url="$1"
@@ -60,11 +60,20 @@ if ! find "${pmaports_dir}" -type f -path "*/${kernel_package}/APKBUILD" -print 
 	exit 1
 fi
 
-python3 "${pmbootstrap}" -c "${pmb_config}" config work "${pmb_work}"
-python3 "${pmbootstrap}" -c "${pmb_config}" config aports "${pmaports_dir}"
-python3 "${pmbootstrap}" -c "${pmb_config}" config device "${device}"
-python3 "${pmbootstrap}" -c "${pmb_config}" config ui none
-python3 "${pmbootstrap}" -c "${pmb_config}" config user pmos
+# pmbootstrap v3 requires both its config file and work directory to exist
+# before any non-init command runs. Write the small deterministic CI config
+# directly instead of entering the interactive `pmbootstrap init` flow.
+{
+	printf '[pmbootstrap]\n'
+	printf 'aports = %s\n' "${pmaports_dir}"
+	printf 'device = %s\n' "${device}"
+	printf 'ui = none\n'
+	printf 'user = pmos\n'
+	printf 'work = %s\n' "${pmb_work}"
+	printf '\n[providers]\n'
+	printf '\n[mirrors]\n'
+} >"${pmb_config}"
+chmod 600 "${pmb_config}"
 
 pmb_common=(
 	python3 "${pmbootstrap}"
