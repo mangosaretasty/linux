@@ -36,8 +36,8 @@ jobs:
 
     env:
       BUILD_MODE: ${{ inputs.build_mode || 'boot' }}
-      PMBOOTSTRAP_REF: master
-      PMAPORTS_REF: master
+      PMBOOTSTRAP_REF: main
+      PMAPORTS_REF: main
 
     steps:
       - name: Check out the kernel
