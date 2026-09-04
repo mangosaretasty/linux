@@ -90,8 +90,14 @@ static int tianma_622_v0_prepare(struct drm_panel *panel)
 		return ret;
 	}
 
-	tianma_622_v0_reset(ctx);
+	/*
+	 * DO NOT RESET THE PANEL! The generated initialization sequence is
+	 * missing 90% of the required DCS commands. We must rely on lk2nd
+	 * leaving the panel initialized.
+	 */
+	// tianma_622_v0_reset(ctx);
 
+	/*
 	ret = tianma_622_v0_on(ctx);
 	if (ret < 0) {
 		dev_err(dev, "Failed to initialize panel: %d\n", ret);
@@ -99,22 +105,25 @@ static int tianma_622_v0_prepare(struct drm_panel *panel)
 		regulator_bulk_disable(ARRAY_SIZE(tianma_622_v0_supplies), ctx->supplies);
 		return ret;
 	}
+	*/
 
 	return 0;
 }
 
 static int tianma_622_v0_unprepare(struct drm_panel *panel)
 {
-	struct tianma_622_v0 *ctx = to_tianma_622_v0(panel);
-	struct device *dev = &ctx->dsi->dev;
-	int ret;
+	// struct tianma_622_v0 *ctx = to_tianma_622_v0(panel);
+	// struct device *dev = &ctx->dsi->dev;
+	// int ret;
 
+	/*
 	ret = tianma_622_v0_off(ctx);
 	if (ret < 0)
 		dev_err(dev, "Failed to un-initialize panel: %d\n", ret);
+	*/
 
-	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-	regulator_bulk_disable(ARRAY_SIZE(tianma_622_v0_supplies), ctx->supplies);
+	// gpiod_set_value_cansleep(ctx->reset_gpio, 1);
+	// regulator_bulk_disable(ARRAY_SIZE(tianma_622_v0_supplies), ctx->supplies);
 
 	return 0;
 }
@@ -178,7 +187,7 @@ static int tianma_622_v0_probe(struct mipi_dsi_device *dsi)
 	if (ret < 0)
 		return ret;
 
-	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
+	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_ASIS);
 	if (IS_ERR(ctx->reset_gpio))
 		return dev_err_probe(dev, PTR_ERR(ctx->reset_gpio),
 				     "Failed to get reset-gpios\n");

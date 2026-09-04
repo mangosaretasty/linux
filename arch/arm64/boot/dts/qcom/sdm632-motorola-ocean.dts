@@ -40,16 +40,6 @@
 			height = <1520>;
 			stride = <(720 * 3)>;
 			format = "r8g8b8";
-
-			power-domains = <&gcc MDSS_GDSC>;
-
-			clocks = <&gcc GCC_MDSS_AHB_CLK>,
-				 <&gcc GCC_MDSS_AXI_CLK>,
-				 <&gcc GCC_MDSS_VSYNC_CLK>,
-				 <&gcc GCC_MDSS_MDP_CLK>,
-				 <&gcc GCC_MDSS_BYTE0_CLK>,
-				 <&gcc GCC_MDSS_PCLK0_CLK>,
-				 <&gcc GCC_MDSS_ESC0_CLK>;
 		};
 	};
 
@@ -462,6 +452,7 @@
 };
 
 &wcnss_iris {
+	compatible = "qcom,wcn3660b";
 	vddxo-supply = <&pm8953_l7>;
 	vddrfa-supply = <&pm8953_l19>;
 	vddpa-supply = <&pm8953_l9>;
