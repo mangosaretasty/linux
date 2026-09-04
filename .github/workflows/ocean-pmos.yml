@@ -1,0 +1,62 @@
+name: Build Ocean postmarketOS test image
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_mode:
+        description: Artifact to build
+        required: true
+        default: boot
+        type: choice
+        options:
+          - boot
+          - kernel
+  push:
+    paths:
+      - ".github/scripts/build-ocean-pmos.sh"
+      - ".github/workflows/ocean-pmos.yml"
+      - "arch/arm64/boot/dts/qcom/**"
+      - "arch/arm64/configs/**"
+      - "drivers/gpu/drm/**"
+      - "drivers/regulator/**"
+      - "firmware/qcom/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ocean-pmos-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: ${{ inputs.build_mode || 'boot' }} artifact
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+
+    env:
+      BUILD_MODE: ${{ inputs.build_mode || 'boot' }}
+      PMBOOTSTRAP_REF: master
+      PMAPORTS_REF: master
+
+    steps:
+      - name: Check out the kernel
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Show initial disk budget
+        run: df -h /
+
+      - name: Build with pmbootstrap
+        run: .github/scripts/build-ocean-pmos.sh
+
+      - name: Upload Ocean artifacts and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ocean-${{ inputs.build_mode || 'boot' }}-${{ github.sha }}
+          path: out/**
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 1
