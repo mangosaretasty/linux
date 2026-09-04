@@ -154,7 +154,7 @@ fi
 
 (
 	cd "${output_dir}"
-	find . -type f ! -name SHA256SUMS -print0 \
+	find -L . -type f ! -name SHA256SUMS -print0 \
 		| sort -z \
 		| xargs -0 sha256sum
 ) >"${output_dir}/SHA256SUMS"
